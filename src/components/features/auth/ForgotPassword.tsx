@@ -69,7 +69,7 @@ const ForgotPassword = () => {
       </form>
 
       {/* Footer Link */}
-      <div className="mt-8 text-center text-sm text-gray-500">
+      <div className="mt-4 text-center text-sm text-gray-500">
         Remember your password?{" "}
         <Link 
           href={APP_ROUTES.SIGNIN || "/signin"} 
