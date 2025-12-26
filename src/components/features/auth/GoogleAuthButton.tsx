@@ -1,8 +1,6 @@
-"use client";
-
-import React, { useTransition } from "react";
+import React, { useState } from "react";
 import { Loader2 } from "lucide-react";
-import { signInWithGoogle } from "@/actions/auth";
+import { createClient } from "@/lib/supabase/client";
 
 // Google Logo SVG
 const GoogleIcon = () => (
@@ -27,22 +25,40 @@ const GoogleIcon = () => (
 );
 
 export default function GoogleAuthButton({ text = "Sign in with Google" }: { text?: string }) {
-  const [isPending, startTransition] = useTransition();
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleGoogleLogin = () => {
-    startTransition(async () => {
-      await signInWithGoogle();
-    });
+  const handleGoogleLogin = async () => {
+    try {
+        setIsLoading(true);
+        const supabase = createClient();
+        const { error } = await supabase.auth.signInWithOAuth({
+            provider: "google",
+            options: {
+                redirectTo: `${window.location.origin}/auth/callback`,
+                queryParams: {
+                    access_type: 'offline',
+                    prompt: 'consent',
+                },
+            },
+        });
+        if (error) {
+           console.error("Google Auth Error:", error);
+           setIsLoading(false);
+        }
+    } catch (err) {
+        console.error("Unexpected error:", err);
+        setIsLoading(false);
+    }
   };
 
   return (
     <button
       type="button"
       onClick={handleGoogleLogin}
-      disabled={isPending}
+      disabled={isLoading}
       className="w-full bg-white border border-gray-200 text-gray-700 font-medium py-3 rounded-lg hover:bg-gray-50 transition-colors flex items-center justify-center shadow-sm disabled:opacity-70"
     >
-      {isPending ? (
+      {isLoading ? (
         <Loader2 className="animate-spin h-5 w-5 text-gray-500" />
       ) : (
         <>

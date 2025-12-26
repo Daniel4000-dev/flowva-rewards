@@ -13,7 +13,10 @@ export async function GET(request: Request) {
     
     if (!error) {
       // Forward to protected route on success
+      console.log("Auth callback successful, redirecting to:", next);
       return NextResponse.redirect(`${origin}${next}`);
+    } else {
+        console.error("Auth callback exchange error:", error);
     }
   }
 

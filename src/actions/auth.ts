@@ -5,21 +5,19 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { headers } from "next/headers";
 
-const getURL = () => {
-  let url =
-    process.env.NEXT_PUBLIC_SITE_URL ?? 
-    process.env.NEXT_PUBLIC_VERCEL_URL ?? 
-    'http://localhost:3000'
+const getURL = async () => {
+    let url =
+        process.env.NEXT_PUBLIC_SITE_URL ?? // Set this to your site URL in production env.
+        process.env.NEXT_PUBLIC_VERCEL_URL ?? // Automatically set by Vercel.
+        "http://localhost:3000";
 
-  url = url.includes('http') ? url : `https://${url}`
-  url = url.charAt(url.length - 1) === '/' ? url.slice(0, -1) : url
-  
-  // Hardcode localhost for development to avoid env var precedence issues
-  if (process.env.NODE_ENV === 'development') {
-    return 'http://localhost:3000'
-  }
-  
-  return url
+    // Make sure to include `https://` when not localhost.
+    url = url.includes("http") ? url : `https://${url}`;
+    
+    // Ensure no trailing slash
+    url = url.charAt(url.length - 1) === "/" ? url.slice(0, -1) : url;
+
+    return url;
 }
 
 export async function getUserSession() {
@@ -98,41 +96,13 @@ export async function signOut() {
     redirect("/signin");
 }
 
-export async function signInWithGoogle() {
-    // 1. Get the safe URL
-    const baseUrl = getURL(); 
-    const supabase = await createClient();
-    
-    const { data, error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-            // 2. Use the safe URL here
-            redirectTo: `${baseUrl}/auth/callback`, 
-            queryParams: {
-                access_type: 'offline',
-                prompt: 'consent',
-            },
-        },
-    });
-
-    if(error) {
-        return redirect("/error");
-    } 
-    
-    if (data.url) {
-        return redirect(data.url)
-    }
-}
-
 export async function forgotPassword(formData: FormData) {
     const supabase = await createClient();
-    // Use the safe helper instead of headers()
-    const baseUrl = getURL(); 
+    const baseUrl = await getURL(); 
 
     const { error } = await supabase.auth.resetPasswordForEmail(
         formData.get("email") as string,
         {
-            // Now this works reliably on both Vercel and Localhost
             redirectTo: `${baseUrl}/reset-password`
         }
     );
