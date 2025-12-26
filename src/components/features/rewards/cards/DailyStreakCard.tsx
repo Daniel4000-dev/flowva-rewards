@@ -37,22 +37,10 @@ export function DailyStreakCard({ streak, isClaimed, isLoading, onClaim }: Daily
         <div className="flex justify-between gap-1 mb-4">
           {["M", "T", "W", "T", "F", "S", "S"].map((day, i) => {
             
-            // 2. COMPARE INDEX DYNAMICALLY
             const isToday = i === todayIndex; 
             
-            // Calculate Active Streak Range
-            // If claimed, streak ends at today (todayIndex)
-            // If not claimed, streak ends yesterday (todayIndex - 1)
             const lastActiveIndex = isClaimed ? todayIndex : todayIndex - 1;
-            
-            // Start index is streak length days back from lastActiveIndex
-            // e.g. streak 1, claimed (lastActive=2) -> start=2 (only today)
-            // e.g. streak 3, claimed (lastActive=2) -> start=0 (Sun,Mon,Tue)
             const startActiveIndex = lastActiveIndex - streak + 1;
-
-            // Is this day part of the current streak?
-            // Logic handles wrap-around implicitly by checking indices 0-6
-            // If streak is huge (e.g. 100), startActiveIndex is negative, so everything <= lastActiveIndex checks out.
             const isPartOfStreak = i >= startActiveIndex && i <= lastActiveIndex; 
 
             return (

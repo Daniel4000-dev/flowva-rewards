@@ -32,7 +32,6 @@ export default function GoogleAuthButton({ text = "Sign in with Google" }: { tex
         setIsLoading(true);
         const supabase = createClient();
         const redirectTo = `${window.location.origin}/auth/callback`;
-        console.log("Client-side Google Auth redirecting to:", redirectTo);
 
         const { error } = await supabase.auth.signInWithOAuth({
             provider: "google",
@@ -41,11 +40,9 @@ export default function GoogleAuthButton({ text = "Sign in with Google" }: { tex
             },
         });
         if (error) {
-           console.error("Google Auth Error:", error);
            setIsLoading(false);
         }
     } catch (err) {
-        console.error("Unexpected error:", err);
         setIsLoading(false);
     }
   };

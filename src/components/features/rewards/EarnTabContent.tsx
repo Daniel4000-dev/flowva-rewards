@@ -5,16 +5,16 @@ import { toast } from "sonner";
 import { Share2, Star } from "lucide-react"; 
 import { Button } from "@/components/ui/button";
 
-// Logic
+
 import { claimDailyStreak, checkStackStatus } from "@/actions/rewards";
 import type { User, ModalType } from "@/types";
 
-// Modals
+
 import { StreakSuccessModal } from "./modals/StreakSuccessModal";
 import { ReclaimFormModal } from "./modals/ReclaimFormModal";
 import { StackEmptyModal } from "./modals/StackEmptyModal";
 
-// Sub-Components
+
 import { PointsBalanceCard } from "./cards/PointsBalanceCard";
 import { DailyStreakCard } from "./cards/DailyStreakCard";
 import { SpotlightCard } from "./cards/SpotlightCard";
@@ -24,7 +24,7 @@ export function EarnTabContent({ profile }: { profile: User | null }) {
   const [isPending, startTransition] = useTransition();
   const [activeModal, setActiveModal] = useState<ModalType>(null);
   
-  // Calculate if claimed today based on profile data
+
   const checkIsClaimedToday = () => {
       if (!profile?.last_claim_date) return false;
       const lastClaim = new Date(profile.last_claim_date);
@@ -38,8 +38,8 @@ export function EarnTabContent({ profile }: { profile: User | null }) {
 
   const [isClaimedToday, setIsClaimedToday] = useState(checkIsClaimedToday());
 
-  // --- NEW: Local State for Instant Updates ---
-  // We initialize with server data, but allow local updates
+
+
   const [currentPoints, setCurrentPoints] = useState(profile?.points_balance || 0);
   const [currentStreak, setCurrentStreak] = useState(profile?.current_streak || 0);
 
