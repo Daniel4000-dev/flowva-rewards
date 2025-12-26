@@ -52,7 +52,7 @@ export default function GoogleAuthButton({ text = "Sign in with Google" }: { tex
       type="button"
       onClick={handleGoogleLogin}
       disabled={isLoading}
-      className="w-full bg-white border border-gray-200 text-gray-700 font-medium py-3 rounded-lg hover:bg-gray-50 transition-colors flex items-center justify-center shadow-sm disabled:opacity-70"
+      className="w-full bg-white border text-gray-700 font-medium py-3 rounded-md hover:bg-gray-50 transition-colors flex items-center justify-center disabled:opacity-70"
     >
       {isLoading ? (
         <Loader2 className="animate-spin h-5 w-5 text-gray-500" />

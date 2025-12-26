@@ -37,7 +37,7 @@ const LoginForm = () => {
         
         {/* Email Field */}
         <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+          <label className="block text-sm text-gray-700 mb-1.5">
             Email
           </label>
           <input
@@ -45,13 +45,13 @@ const LoginForm = () => {
             name="email"
             placeholder="user@example.com"
             required
-            className="w-full px-4 py-3 rounded-lg border border-gray-200 text-gray-700 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all"
+            className="w-full px-4 py-2.5 rounded-md border border-gray-200 text-gray-700 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all"
           />
         </div>
 
         {/* Password Field */}
         <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+          <label className="block text-sm text-gray-700 mb-1.5">
             Password
           </label>
           <div className="relative">
@@ -60,12 +60,12 @@ const LoginForm = () => {
               name="password"
               placeholder="••••••••"
               required
-              className="w-full px-4 py-3 rounded-lg border border-gray-200 text-gray-700 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all"
+              className="w-full px-4 py-2.5 rounded-md border border-gray-200 text-gray-700 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all"
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-sm font-semibold text-violet-600 hover:text-violet-700"
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-violet-600 hover:text-violet-700"
             >
               {showPassword ? "Hide" : "Show"}
             </button>
@@ -73,10 +73,10 @@ const LoginForm = () => {
         </div>
 
         {/* Forgot Password Link */}
-        <div className="flex justify-end -mt-1">
+        <div className="flex justify-end -mt-3">
           <Link 
             href={APP_ROUTES.FORGOT_PASSWORD || "/reset-password"}
-            className="text-sm text-violet-600 font-semibold hover:underline"
+            className="text-sm text-violet-600 hover:underline"
           >
             Forgot Password?
           </Link>
@@ -100,12 +100,12 @@ const LoginForm = () => {
       </form>
 
       {/* Divider */}
-      <div className="relative my-8">
+      <div className="relative my-4">
         <div className="absolute inset-0 flex items-center">
           <div className="w-full border-t border-gray-200"></div>
         </div>
         <div className="relative flex justify-center text-sm">
-          <span className="bg-white px-4 text-gray-400 font-medium">or</span>
+          <span className="bg-white px-4 text-gray-400">or</span>
         </div>
       </div>
 
@@ -113,11 +113,11 @@ const LoginForm = () => {
       <GoogleAuthButton text="Sign in with Google" />
 
       {/* Sign Up Link */}
-      <div className="mt-8 text-center text-sm text-gray-500">
-        Don't have an account?{" "}
+      <div className="mt-3 text-center text-sm text-gray-500">
+        Don&apos;t have an account?{" "}
         <Link 
           href={APP_ROUTES.SIGNUP || "/signup"} 
-          className="text-[#8B5CF6] font-semibold hover:underline"
+          className="text-[#8B5CF6] hover:underline"
         >
           Sign up
         </Link>
