@@ -1,36 +1,68 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Flowva Rewards Hub Re-implementation
 
-## Getting Started
+This project is a pixel-perfect recreation of the Flowva Rewards page, built as a technical assessment for the React Full-Stack Developer role. It leverages **Next.js 15**, **React 19**, **Tailwind CSS**, and **Supabase**.
 
-First, run the development server:
+## 🚀 Tech Stack
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+-   **Frontend**: Next.js (App Router), React, Tailwind CSS, Lucide Icons.
+-   **UI Library**: Shadcn UI (Radix Primitives).
+-   **Backend**: Supabase (PostgreSQL, Auth, Edge Functions).
+-   **State Management**: React Server Components + Client Hooks.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🛠️ Setup Instructions
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1.  **Prerequisites**:
+    -   Node.js >= 20.9.0
+    -   npm or yarn
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+2.  **Clone the repository**:
+    ```bash
+    git clone <repository-url>
+    cd flowva-rewards
+    ```
 
-## Learn More
+2.  **Install dependencies**:
+    ```bash
+    npm install
+    # or
+    yarn install
+    ```
 
-To learn more about Next.js, take a look at the following resources:
+3.  **Environment Variables**:
+    Create a `.env.local` file in the root directory and add your Supabase credentials:
+    ```env
+    NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+    NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+    ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+4.  **Database Setup**:
+    -   Go to your Supabase Dashboard.
+    -   Open the SQL Editor.
+    -   Copy and paste the contents of `schema.sql` (found in the root of this project) to initialize the database tables, triggers, and sample data.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+5.  **Run Development Server**:
+    ```bash
+    npm run dev
+    ```
+    Open [http://localhost:3000](http://localhost:3000) to view the app.
 
-## Deploy on Vercel
+## 🏗️ Architectural Decisions
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+-   **Server Components First**: Leveraging Next.js App Router to fetch data on the server (`src/app/dashboard/rewards/page.tsx`) for improved performance and SEO.
+-   **Skeleton Loading Strategy**: Implemented custom Skeleton components (`RewardCardSkeleton`, `StatsCardSkeleton`) that perfectly mirror the final UI to minimize Cumulative Layout Shift (CLS).
+-   **Premium Loading Experience**: A custom `LoadingSequencer` manages the initial "App Launch" experience (Animated Icon -> Skeleton -> Data) to provide a polished feel, ensuring users on fast networks still experience the branding sequence.
+-   **Supabase Integration**:
+    -   **Auth**: Handled via `src/actions/auth.ts` using Server Actions for secure, JS-free form submissions where possible.
+    -   **Database**: Typed query results using TypeScript interfaces matching the schema.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## ✨ Key Features
+
+-   **Dynamic Rewards Grid**: Renders rewards based on Supabase data.
+-   **Real-time Notifications**: (Mocked logic in `handle_new_user`) Triggers welcome notifications on signup.
+-   **Interactive Sidebar**: User menu with "Log Out" functionality.
+-   **Responsive Design**: Fully responsive layout matching the provided screenshots.
+
+## 🕵️ Trade-offs
+
+-   **Mocked "Streak" Logic**: The daily streak is currently calculated based on a simple integer column. A production version would likely use a robust `activity_log` table.
+-   **Client-Side "Sequencer"**: To guarantee the specific "Icon -> Skeleton" animation sequence demanded by the prompt, we use a Client Component wrapper. Ideally, streaming Server Components (`Suspense`) would be used exclusively, but the specific animation requirement necessitated this hybrid approach.
