@@ -84,7 +84,7 @@ const ResetPassword = () => {
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-sm font-semibold text-violet-600 hover:text-violet-700"
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-violet-600 hover:text-violet-700"
             >
               {showPassword ? "Hide" : "Show"}
             </button>
@@ -107,7 +107,7 @@ const ResetPassword = () => {
             <button
               type="button"
               onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-sm font-semibold text-violet-600 hover:text-violet-700"
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-violet-600 hover:text-violet-700"
             >
               {showConfirmPassword ? "Hide" : "Show"}
             </button>
@@ -132,7 +132,7 @@ const ResetPassword = () => {
       </form>
 
       {/* Footer Link */}
-      <div className="mt-8 text-center text-sm text-gray-500">
+      <div className="mt-4 text-center text-sm text-gray-500">
         Remember your password?{" "}
         <Link 
           href={APP_ROUTES.SIGNIN || "/signin"} 
