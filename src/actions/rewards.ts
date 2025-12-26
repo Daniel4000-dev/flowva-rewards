@@ -80,7 +80,7 @@ export async function claimSpotlightBonus() {
     }); // Assuming you have an RPC or use standard update like above
 
     if (error) return { status: "error", message: error.message };
-    revalidatePath("/rewards");
+    revalidatePath("/dashboard/rewards");
     return { status: "success" };
 }
 
