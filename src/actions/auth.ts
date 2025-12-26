@@ -9,15 +9,19 @@ const getURL = () => {
   let url =
     process.env.NEXT_PUBLIC_SITE_URL ?? 
     process.env.NEXT_PUBLIC_VERCEL_URL ?? 
-    'http://localhost:3000' // Fallback for local dev
+    'http://localhost:3000'
 
-  // Include `https://` when not localhost
   url = url.includes('http') ? url : `https://${url}`
-  // Ensure no trailing slash
   url = url.charAt(url.length - 1) === '/' ? url.slice(0, -1) : url
+  
+  // Hardcode localhost for development to avoid env var precedence issues
+  if (process.env.NODE_ENV === 'development') {
+    return 'http://localhost:3000'
+  }
   
   return url
 }
+
 export async function getUserSession() {
     const supabase = await createClient();
     const { data, error } = await supabase.auth.getUser();
@@ -122,12 +126,14 @@ export async function signInWithGoogle() {
 
 export async function forgotPassword(formData: FormData) {
     const supabase = await createClient();
-    const origin = (await headers()).get("origin");
+    // Use the safe helper instead of headers()
+    const baseUrl = getURL(); 
 
     const { error } = await supabase.auth.resetPasswordForEmail(
         formData.get("email") as string,
         {
-            redirectTo: `${origin}/reset-password`
+            // Now this works reliably on both Vercel and Localhost
+            redirectTo: `${baseUrl}/reset-password`
         }
     );
 
