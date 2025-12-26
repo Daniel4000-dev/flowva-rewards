@@ -31,10 +31,13 @@ export default function GoogleAuthButton({ text = "Sign in with Google" }: { tex
     try {
         setIsLoading(true);
         const supabase = createClient();
+        const redirectTo = `${window.location.origin}/auth/callback`;
+        console.log("Client-side Google Auth redirecting to:", redirectTo);
+
         const { error } = await supabase.auth.signInWithOAuth({
             provider: "google",
             options: {
-                redirectTo: `${window.location.origin}/auth/callback`,
+                redirectTo,
                 queryParams: {
                     access_type: 'offline',
                     prompt: 'consent',
