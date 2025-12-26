@@ -23,7 +23,20 @@ import { ReferralSection } from "./ReferralSection";
 export function EarnTabContent({ profile }: { profile: User | null }) {
   const [isPending, startTransition] = useTransition();
   const [activeModal, setActiveModal] = useState<ModalType>(null);
-  const [isClaimedToday, setIsClaimedToday] = useState(false);
+  
+  // Calculate if claimed today based on profile data
+  const checkIsClaimedToday = () => {
+      if (!profile?.last_claim_date) return false;
+      const lastClaim = new Date(profile.last_claim_date);
+      const today = new Date();
+      return (
+          lastClaim.getDate() === today.getDate() &&
+          lastClaim.getMonth() === today.getMonth() &&
+          lastClaim.getFullYear() === today.getFullYear()
+      );
+  };
+
+  const [isClaimedToday, setIsClaimedToday] = useState(checkIsClaimedToday());
 
   // --- NEW: Local State for Instant Updates ---
   // We initialize with server data, but allow local updates

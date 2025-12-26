@@ -16,7 +16,7 @@ export const APP_ROUTES = {
   LIBRARY: "/dashboard/library",
   TECH_STACK: "/dashboard/tech-stack",
   SUBSCRIPTIONS: "/dashboard/subscriptions",
-  REWARDS: "/dashboard/rewards",
+  REWARDS: "/dashboard/earn-rewards",
   SETTINGS: "/dashboard/settings",
 };
 

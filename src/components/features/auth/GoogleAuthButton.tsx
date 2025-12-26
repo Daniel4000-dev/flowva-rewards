@@ -38,10 +38,6 @@ export default function GoogleAuthButton({ text = "Sign in with Google" }: { tex
             provider: "google",
             options: {
                 redirectTo,
-                queryParams: {
-                    access_type: 'offline',
-                    prompt: 'consent',
-                },
             },
         });
         if (error) {

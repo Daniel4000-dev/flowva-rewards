@@ -40,8 +40,20 @@ export function DailyStreakCard({ streak, isClaimed, isLoading, onClaim }: Daily
             // 2. COMPARE INDEX DYNAMICALLY
             const isToday = i === todayIndex; 
             
-            // Optional: Visually mark past days as "completed" if you want
-            const isPast = i < todayIndex; 
+            // Calculate Active Streak Range
+            // If claimed, streak ends at today (todayIndex)
+            // If not claimed, streak ends yesterday (todayIndex - 1)
+            const lastActiveIndex = isClaimed ? todayIndex : todayIndex - 1;
+            
+            // Start index is streak length days back from lastActiveIndex
+            // e.g. streak 1, claimed (lastActive=2) -> start=2 (only today)
+            // e.g. streak 3, claimed (lastActive=2) -> start=0 (Sun,Mon,Tue)
+            const startActiveIndex = lastActiveIndex - streak + 1;
+
+            // Is this day part of the current streak?
+            // Logic handles wrap-around implicitly by checking indices 0-6
+            // If streak is huge (e.g. 100), startActiveIndex is negative, so everything <= lastActiveIndex checks out.
+            const isPartOfStreak = i >= startActiveIndex && i <= lastActiveIndex; 
 
             return (
               <div
@@ -49,10 +61,14 @@ export function DailyStreakCard({ streak, isClaimed, isLoading, onClaim }: Daily
                 className={cn(
                   "h-9 w-9 rounded-full flex items-center justify-center text-xs font-bold transition-all",
                   isToday
-                    ? "bg-white border-2 border-[#7E22CE] text-[#7E22CE] shadow-sm scale-110" // Active Day
-                    : isPast 
-                        ? "bg-purple-100 text-purple-400" // Past Days (Optional visual tweak)
-                        : "bg-slate-200 text-slate-500" // Future Days
+                    ? cn(
+                        "bg-white border-2 border-[#7E22CE] text-[#7E22CE] shadow-sm scale-110",
+                        // Keep purple bg if today implies it's claimed/active
+                         isPartOfStreak && "bg-purple-100"
+                    )
+                    : isPartOfStreak 
+                        ? "bg-purple-100 text-purple-400" // Active Streak Days
+                        : "bg-slate-200 text-slate-500" // Inactive / Future Days
                 )}
               >
                 {day}
