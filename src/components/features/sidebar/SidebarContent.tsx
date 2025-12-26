@@ -80,10 +80,10 @@ export default function SidebarContent({ user }: { user: User | null }) {
             </DropdownMenuTrigger>
             
             <DropdownMenuContent 
-              side="right" 
-              align="end" 
+              side="top" 
+              align="start" 
               sideOffset={10}
-              className="w-60 p-2 rounded-xl shadow-xl border-slate-100/50 bg-white/95 backdrop-blur-sm"
+              className="w-50 p-2 rounded-xl shadow-xl border-slate-100/50 bg-white/95 backdrop-blur-sm"
             >
               <DropdownMenuLabel className="font-normal text-xs text-slate-400 px-3 py-2">
                 My Account
@@ -98,7 +98,7 @@ export default function SidebarContent({ user }: { user: User | null }) {
               </DropdownMenuItem>
               <DropdownMenuSeparator className="bg-slate-100 my-1" />
               <DropdownMenuItem 
-                className="cursor-pointer font-medium p-3 rounded-lg text-red-600 focus:text-red-700 focus:bg-red-50"
+                className="cursor-pointer font-medium p-3 rounded-lg focus:text-red-700 focus:bg-red-50"
                 onClick={() => signOut()}
               >
                 <LogOut className="mr-3 h-4 w-4" />

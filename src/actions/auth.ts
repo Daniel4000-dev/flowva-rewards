@@ -5,6 +5,19 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { headers } from "next/headers";
 
+const getURL = () => {
+  let url =
+    process.env.NEXT_PUBLIC_SITE_URL ?? 
+    process.env.NEXT_PUBLIC_VERCEL_URL ?? 
+    'http://localhost:3000' // Fallback for local dev
+
+  // Include `https://` when not localhost
+  url = url.includes('http') ? url : `https://${url}`
+  // Ensure no trailing slash
+  url = url.charAt(url.length - 1) === '/' ? url.slice(0, -1) : url
+  
+  return url
+}
 export async function getUserSession() {
     const supabase = await createClient();
     const { data, error } = await supabase.auth.getUser();
@@ -82,13 +95,15 @@ export async function signOut() {
 }
 
 export async function signInWithGoogle() {
-    const origin = (await headers()).get("origin");
+    // 1. Get the safe URL
+    const baseUrl = getURL(); 
     const supabase = await createClient();
     
     const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-            redirectTo: `${origin}/auth/callback`, 
+            // 2. Use the safe URL here
+            redirectTo: `${baseUrl}/auth/callback`, 
             queryParams: {
                 access_type: 'offline',
                 prompt: 'consent',
@@ -97,8 +112,10 @@ export async function signInWithGoogle() {
     });
 
     if(error) {
-        redirect("/error");
-    } else if (data.url) {
+        return redirect("/error");
+    } 
+    
+    if (data.url) {
         return redirect(data.url)
     }
 }
